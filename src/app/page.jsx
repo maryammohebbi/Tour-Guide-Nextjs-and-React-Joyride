@@ -1,7 +1,28 @@
+import Item from "@/components/Item";
 import TourGuide from "../components/TourGuide"
 import React from 'react'
 
+const items = [
+  {
+    id: 1,
+    bgColor: "bg-red-200",
+
+  },
+  {
+    id: 2,
+    bgColor: "bg-yellow-200",
+    
+  },
+  {
+    id: 3,
+    bgColor: "bg-green-200",
+    
+  }
+]
+
+
 const Home = () => {
+
   return (
     <div>
       <header className="header w-full bg-pink-100 p-5">
@@ -11,9 +32,13 @@ const Home = () => {
       <main className="h-screen bg-slate-200 p-5 w-full" >
         <p className="mb-4 font-bold">محتوای اصلی سایت</p>
         <div className="flex flex-col gap-4">
-          <div className="red h-[10rem] w-[40rem] bg-red-200"></div>
-          <div className="yellow h-[10rem] w-[40rem] bg-yellow-200"></div>
-          <div className="green h-[10rem] w-[40rem] bg-green-200"></div>
+          {
+            items.map(item => {
+              return(
+                <Item key={item.id} item={item}/>
+              )
+            })
+          }
         </div>
       </main>
       
@@ -22,7 +47,7 @@ const Home = () => {
       </footer>
 
       {/* Add the TourGuide component */}
-      <TourGuide />
+      <TourGuide items={items} />
     </div>
   );
 };

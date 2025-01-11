@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import Joyride from "react-joyride"
 
-const TourGuide = () => {
+const TourGuide = ({items}) => {
   const [run, setRun] = useState(false)
 
   useEffect(() => {
@@ -15,27 +15,43 @@ const TourGuide = () => {
     }
   }, []) // Empty dependency array to run only once when the component mounts
 
+
+    // Define dynamic content for each item
+    const itemDescriptions = {
+      1: "این بخش مربوط به آیتم قرمز است. در اینجا می‌توانید اطلاعات بیشتری را پیدا کنید.",
+      2: "این بخش برای آیتم زرد است. ویژگی‌های خاص این آیتم را بررسی کنید.",
+      3: "آیتم سبز ویژگی‌های منحصر به فرد خود را دارد. حتماً بررسی کنید!",
+      // Add more descriptions for other items as needed
+    };
+
+    
   const steps = [
     {
       target: ".header",
       content: "این بخش، هدر سایت است.",
       placement: "bottom", // Tooltip arrow on top
     },
-    {
-      target: ".red",
-      content: "این بخش قرمز است.",
-      placement: "left", // Tooltip arrow on the right
-    },
-    {
-      target: ".yellow",
-      content: "این بخش زرد است.",
-      placement: "left", // Tooltip arrow on the right
-    },
-    {
-      target: ".green",
-      content: "این بخش سبز است.",
-      placement: "left", // Tooltip arrow on the right
-    },
+    // {
+    //   target: ".red",
+    //   content: "به رنگ قرمز است",
+    //   placement: "left", // Tooltip arrow on the right
+    // },
+    // {
+    //   target: ".yellow",
+    //   content: "این بخش زرد است.",
+    //   placement: "left", // Tooltip arrow on the right
+    // },
+    // {
+    //   target: ".green",
+    //   content: "رنگ سبز کمرنگ :)",
+    //   placement: "left", // Tooltip arrow on the right
+    // },
+
+    ...items.map((item)=> ({
+      target: `.item-${item.id}`,
+      content: itemDescriptions[item.id] || "توضیحات مربوط به این آیتم موجود نیست",
+      placement: "left"
+    })),
     {
       target: ".footer",
       content: "این بخش، فوتر سایت است.",
