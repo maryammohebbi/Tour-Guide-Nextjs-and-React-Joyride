@@ -45,39 +45,39 @@ const TourGuide = ({ items }) => {
       continuous
       showSkipButton
       showProgress
-      styles={{
-        options: {
-          zIndex: 1000,
-          arrowColor: "#fff",
-          backgroundColor: "#fff",
-          textColor: "#000",
-        },
-        tooltip: {
-          padding: "15px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#fff",
-        },
-        buttonNext: {
-          backgroundColor: "green",
-          color: "#fff",
-          borderRadius: "5px",
-          padding: "5px 10px",
-        },
-        buttonBack: {
-          color: "#000",
-        },
-        buttonClose: {
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          backgroundColor: "transparent",
-          border: "none",
-          fontSize: "20px",
-          color: "#000",
-          cursor: "pointer",
-        },
-      }}
+      // styles={{
+      //   options: {
+      //     zIndex: 1000,
+      //     arrowColor: "#fff",
+      //     backgroundColor: "#fff",
+      //     textColor: "#000",
+      //   },
+      //   tooltip: {
+      //     padding: "15px",
+      //     borderRadius: "10px",
+      //     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+      //     backgroundColor: "#fff",
+      //   },
+      //   buttonNext: {
+      //     backgroundColor: "green",
+      //     color: "#fff",
+      //     borderRadius: "5px",
+      //     padding: "5px 10px",
+      //   },
+      //   buttonBack: {
+      //     color: "#000",
+      //   },
+      //   buttonClose: {
+      //     position: "absolute",
+      //     top: "10px",
+      //     right: "10px",
+      //     backgroundColor: "transparent",
+      //     border: "none",
+      //     fontSize: "20px",
+      //     color: "#000",
+      //     cursor: "pointer",
+      //   },
+      // }}
       locale={{
         next: "بعدی",
         back: "قبلی",
@@ -89,27 +89,15 @@ const TourGuide = ({ items }) => {
         const totalSteps = steps.length; // Get total steps
 
         return (
-          <div
-            style={{
-              padding: "15px",
-              borderRadius: "10px",
-              backgroundColor: "#fff",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              position: "relative",
-            }}
-          >
-
+          <div className="p-4 rounded-md bg-white relative shadow-md z-[1000]">
 
             {/* Top-right close button */}
             <button {...closeProps} className="absolute top-4 left-4">
               ✕
             </button>
 
-
             {/* guide contect */}
             <p className="p-4 mt-4">{step.content}</p>
-
-
 
             <div className="flex justify-between mt-5 p-2">
 
@@ -135,12 +123,7 @@ const TourGuide = ({ items }) => {
                 {/* Next button */}
                 <button
                   {...primaryProps}
-                  style={{
-                    backgroundColor: "green",
-                    color: "#fff",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                  }}
+                  className="bg-green-700 text-white px-2 py-1 rounded-md"
                 >
                   {index === totalSteps - 1 ? "پایان" : "بعدی"}
                 </button>
