@@ -1,71 +1,50 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react"
-import Joyride from "react-joyride"
+import React, { useState, useEffect } from "react";
+import Joyride from "react-joyride";
 
-const TourGuide = ({items}) => {
-  const [run, setRun] = useState(false)
+const TourGuide = ({ items }) => {
+  const [run, setRun] = useState(false);
 
   useEffect(() => {
-    // Check if this is the first visit
-    const hasSeenTour = localStorage.getItem("hasSeenTour")
+    const hasSeenTour = localStorage.getItem("hasSeenTour");
     if (!hasSeenTour) {
-      setRun(true) // Automatically start the tour
-      localStorage.setItem("hasSeenTour", "true") // Mark the tour as shown
+      setRun(true);
+      localStorage.setItem("hasSeenTour", "true");
     }
-  }, []) // Empty dependency array to run only once when the component mounts
+  }, []);
 
+  const itemDescriptions = {
+    1: "این بخش مربوط به آیتم قرمز است. در اینجا می‌توانید اطلاعات بیشتری را پیدا کنید.",
+    2: "این بخش برای آیتم زرد است. ویژگی‌های خاص این آیتم را بررسی کنید.",
+    3: "آیتم سبز ویژگی‌های منحصر به فرد خود را دارد. حتماً بررسی کنید!",
+  };
 
-    // Define dynamic content for each item
-    const itemDescriptions = {
-      1: "این بخش مربوط به آیتم قرمز است. در اینجا می‌توانید اطلاعات بیشتری را پیدا کنید.",
-      2: "این بخش برای آیتم زرد است. ویژگی‌های خاص این آیتم را بررسی کنید.",
-      3: "آیتم سبز ویژگی‌های منحصر به فرد خود را دارد. حتماً بررسی کنید!",
-      // Add more descriptions for other items as needed
-    };
-
-    
   const steps = [
     {
       target: ".header",
       content: "این بخش، هدر سایت است.",
-      placement: "bottom", // Tooltip arrow on top
+      placement: "bottom",
     },
-    // {
-    //   target: ".red",
-    //   content: "به رنگ قرمز است",
-    //   placement: "left", // Tooltip arrow on the right
-    // },
-    // {
-    //   target: ".yellow",
-    //   content: "این بخش زرد است.",
-    //   placement: "left", // Tooltip arrow on the right
-    // },
-    // {
-    //   target: ".green",
-    //   content: "رنگ سبز کمرنگ :)",
-    //   placement: "left", // Tooltip arrow on the right
-    // },
-
-    ...items.map((item)=> ({
+    ...items.map((item) => ({
       target: `.item-${item.id}`,
       content: itemDescriptions[item.id] || "توضیحات مربوط به این آیتم موجود نیست",
-      placement: "left"
+      placement: "left",
     })),
     {
       target: ".footer",
       content: "این بخش، فوتر سایت است.",
-      placement: "top", // Tooltip arrow on the bottom
+      placement: "top",
     },
   ];
 
   return (
     <Joyride
       steps={steps}
-      run={run} // Automatically starts when `run` is true
+      run={run}
       continuous
       showSkipButton
-      showProgress={false}
+      showProgress
       styles={{
         options: {
           zIndex: 1000,
@@ -81,28 +60,94 @@ const TourGuide = ({items}) => {
         },
         buttonNext: {
           backgroundColor: "green",
-          color: "#000",
+          color: "#fff",
           borderRadius: "5px",
-          padding: "8px 12px",
-        },
-        buttonSkip: {
-          color: "red",
-          fontWeight: "bold",
-          border: "1px solid red",
+          padding: "5px 10px",
         },
         buttonBack: {
-          color: "#000"
+          color: "#000",
         },
         buttonClose: {
-          right: "88%",
-          top: "5px",
-        }
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          backgroundColor: "transparent",
+          border: "none",
+          fontSize: "20px",
+          color: "#000",
+          cursor: "pointer",
+        },
       }}
       locale={{
         next: "بعدی",
         back: "قبلی",
         skip: "بستن",
         last: "پایان",
+        // progress: (current, total) => `${current}/${total}`, // Show current and total steps
+      }}
+      tooltipComponent={({ step, index, primaryProps, skipProps, backProps, closeProps }) => {
+        const totalSteps = steps.length; // Get total steps
+
+        return (
+          <div
+            style={{
+              padding: "15px",
+              borderRadius: "10px",
+              backgroundColor: "#fff",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+              position: "relative",
+            }}
+          >
+
+
+            {/* Top-right close button */}
+            <button {...closeProps} className="absolute top-4 left-4">
+              ✕
+            </button>
+
+
+            {/* guide contect */}
+            <p className="p-4 mt-4">{step.content}</p>
+
+
+
+            <div className="flex justify-between mt-5 p-2">
+
+              {/* Progress Indicator */}
+              <div>{index + 1}/{totalSteps}</div>
+
+              {/* buttons */}
+              <div className="flex gap-x-1">
+                {/* Back button (shown only if it's not the first step) */}
+                {index > 0 && (
+                  <button
+                    {...backProps}
+                    style={{
+                      color: "#000",
+                      border: "1px solid #000",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    قبلی
+                  </button>
+                )}
+                {/* Next button */}
+                <button
+                  {...primaryProps}
+                  style={{
+                    backgroundColor: "green",
+                    color: "#fff",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {index === totalSteps - 1 ? "پایان" : "بعدی"}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       }}
       callback={(data) => {
         if (data.status === "finished" || data.status === "skipped") {
